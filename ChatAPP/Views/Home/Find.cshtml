@@ -1,0 +1,13 @@
+﻿@model IEnumerable<User>
+
+    <div class="members">
+        @foreach(var user in Model) {
+            <a class="role-nav-item" asp-controller="Home" asp-action="CreatePrivateRoom" asp-route-userId="@user.Id">
+                            <div class="role-nav-icon"></div>
+                            <div class="nav-content">
+                                <header class="item-name">@user.UserName</header>
+                                <footer class="last-message">user</footer>
+                            </div>
+                            </a>
+        }
+    </div>

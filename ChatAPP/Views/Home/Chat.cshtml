@@ -1,0 +1,71 @@
+﻿@model Chat
+@{
+    var userId = User.GetUserId();
+}
+@if (@Model.Type == ChatType.Room)
+{
+    <header class="chat-name" >@Model.Name</header>
+}
+@if (@Model.Type == ChatType.Private)
+{
+    <header class="chat-name" ></header>
+}
+<div class="show-messages">
+    @if (Model?.Messages != null)
+    {
+        @foreach (var message in Model.Messages)
+        {
+            <div class="message">
+                <div class="message-content">@message.Name: @message.Text</div>
+                <div class="message-time">@message.Timestamp</div>
+            </div>
+        }
+    }
+    </div>
+    <form class="input-message" onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessage">
+        <input type="hidden" name="roomId" value="@Model.Id">
+        <input class="input-message-content" type="text" name="message" id="message-input"/>
+        <button type="submit" class="send-message"></button>
+    </form>
+
+@section scripts {
+<script src="~/js/signalr.min.js"></script>
+<script src="~/js/messageBuilder.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("/chatHub")
+        .build();
+    var _connectionId = '';
+    connection.on("RecieveMessage", function (data) {
+        var message = messageBuilder()
+            .createMessage()
+            .withParagraph(data.name,data.text)
+            .withFooter(data.timestamp)
+            .build();
+        document.querySelector('.show-messages').append(message);
+    })
+    connection.start()
+        .then(function () {
+            connection.invoke('joinRoom', '@Model.Id');
+        })
+        .catch(function (err) {
+            console.log(err)
+        })
+    window.addEventListener('onunload', function () {
+        connection.invoke('leaveRoom', '@Model.Id');
+    })
+    var sendMessage = function (event) {
+        event.preventDefault();
+        var data = new FormData(event.target);
+        document.getElementById('message-input').value = '';
+        axios.post('/Home/SendMessage', data)
+            .then(res => {
+                console.log("Message Sent!")
+            })
+            .catch(err => {
+                console.log("Failed to send message!")
+            })
+    }
+</script>
+}

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Chat>
+    @{
+    var userId = User.GetUserId();
+    }
+                    <header class="chats-header">
+                        <div class="chats-reseach">
+                            <div class="chats-div">Chats</div>
+                            <button class="create-chat" id="create-room-btn">+</button>
+                        </div>
+                        <div class="type-chats">
+                            <div class="type-chat">
+                                <a asp-controller="Home" asp-action="Index">Public</a>
+                            </div>
+                            <div class="type-chat">
+                                <a asp-controller="Home" asp-action="Private">Private</a>
+                            </div>
+                            <div class="type-chat">
+                                <a asp-controller="Home" asp-action="Find">Find</a>
+                            </div>
+                        </div>
+                    </header>
+                    <div class="nav-chats">
+                        @foreach(var chat in Model){
+                        <a class="nav-item" asp-controller="Home" asp-action="Chat" asp-route-id="@chat.Id">
+                            <div class="nav-icon"></div>
+                            <div class="nav-content">
+                                <header class="item-name">@chat.Name</header>
+                                <footer class="last-message">@chat.Type</footer>
+                            </div>
+                        </a>
+                        }
+                    </div>
+                    <footer class="delete-chat" >
+                        <div class="delete-icon" id="remove-room-btn"></div>
+                    </footer>

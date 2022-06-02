@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Chat>
+
+    @{
+    var userId = User.GetUserId();
+    }
+
+    <div class="members">
+        @foreach(var chat in Model) {
+        <a class="role-nav-item" asp-controller="Home" asp-action="Chat" asp-route-id="@chat.Id">
+            <div class="role-nav-icon"></div>
+            <div class="nav-content">
+                <header class="item-name">@chat.Users.FirstOrDefault(x => x.UserId != userId).User.UserName</header>
+                                <footer class="last-message">user</footer>
+                            </div>
+                            </a>
+        }
+    </div>

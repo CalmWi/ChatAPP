@@ -1,0 +1,36 @@
+﻿@model ChatAPP.ViewModels.LoginViewModel
+<link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+<div class="login-main">
+    <div class="picture-div">
+    </div>
+    <div class="login-form">
+        <header class="header">
+            <div class="div-header">Sign In</div>
+        </header>
+        <div class="input-form">
+            <form method="post" class="form" asp-antiforgery="true" asp-controller="Account" asp-action="Login">
+                <div class="validation" asp-validation-summary="All"></div>
+                    <div class="div-form">
+                        <label class="label" asp-for="Name"></label><br />
+                        <input class="input" asp-for="Name" placeholder="Name" />
+                        <span asp-validation-for="Name"></span>
+                    </div>
+                    <div class="div-form">
+                        <label class="label" asp-for="Password"></label><br />
+                        <input class="input" asp-for="Password" placeholder="Password" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+                    <div class="div-form">
+                        <input class="submit-button" type="submit" value="Sigh in" />
+                    </div>
+            </form>
+        </div>
+        <footer class="form-footer">
+            <a class="footer-link" asp-controller="Account" asp-action="Register">Resister (click here)</a>
+        </footer>
+    </div>
+</div>
+@section scripts {
+<script src="~/js/jquery.validate.min.js"></script>
+<script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+}
